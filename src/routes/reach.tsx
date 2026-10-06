@@ -53,7 +53,7 @@ function WorldMap({
           <stop offset="100%" stopColor="#123415" />
         </linearGradient>
         {/* Default filter region (-10%/120%) is plenty for a 2.2 blur and keeps
-            the offscreen buffer small with 340 dots in one group. */}
+            the offscreen buffer small with 530 dots in one group. */}
         <filter id="reach-glow">
           <feGaussianBlur stdDeviation="2.2" result="blur" />
           <feMerge>
