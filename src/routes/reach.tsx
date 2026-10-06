@@ -11,20 +11,11 @@ import {
   type MemberCity,
   type Region,
 } from '../lib/members'
+import { SiteFooter, SiteNav } from '../components/SiteNav'
 
 export const Route = createFileRoute('/reach')({
   component: ReachPage,
 })
-
-function NavLodLogo() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="100,8 192,100 100,192 8,100" fill="none" stroke="#4caf50" strokeWidth="9" />
-      <polygon points="100,34 166,100 100,166 34,100" fill="none" stroke="#4caf50" strokeWidth="4" />
-      <text x="100" y="118" textAnchor="middle" fontFamily="Arial Black,Arial" fontWeight="900" fontSize="52" fill="#4caf50">LOD</text>
-    </svg>
-  )
-}
 
 // Meridians and parallels every 30° — drawn under the land for depth.
 const GRATICULE_LON = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150]
@@ -129,18 +120,7 @@ function ReachPage() {
 
   return (
     <>
-      <nav>
-        <Link to="/" className="nav-logo">
-          <NavLodLogo />
-          <span className="logo-text">LOD</span>
-        </Link>
-        <ul className="nav-links">
-          <li><a href="/#manifesto">Manifesto</a></li>
-          <li><a href="/#pillars">Goals</a></li>
-          <li><Link to="/photos">Photos</Link></li>
-          <li><Link to="/reach">Reach</Link></li>
-        </ul>
-      </nav>
+      <SiteNav />
 
       <div className="reach-hero">
         <div className="section-label">— Global Presence</div>
@@ -258,13 +238,10 @@ function ReachPage() {
           Wherever you are, there is a place for you in this. Join the movement and stand with the
           others near you.
         </p>
-        <Link to="/login"><button className="btn-primary">Join the Movement</button></Link>
+        <Link to="/join"><button className="btn-primary">Join the Movement</button></Link>
       </section>
 
-      <footer>
-        <p style={{ color: '#2a4a2a', fontFamily: "'Oswald', sans-serif", letterSpacing: '3px', fontSize: '13px', marginBottom: '0.5rem' }}>LIBERATION OR DEATH</p>
-        <p>© 2026 LOD Movement. All rights reserved.</p>
-      </footer>
+      <SiteFooter />
     </>
   )
 }

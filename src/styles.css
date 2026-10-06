@@ -1,5 +1,5 @@
-@import "tailwindcss" source("../");
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+@import "tailwindcss" source("../");
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -187,4 +187,82 @@ footer { background: #050505; border-top: 1px solid #1e3a1e; padding: 2rem; text
   .moderation-note { flex: 1 0 100%; margin: 0.5rem 0; }
   .join-to-post { align-items: stretch; flex-direction: column; }
   .nav-links { gap: 1rem; }
+}
+
+/* ============ NAV (mobile) ============ */
+.nav-toggle { display: none; background: none; border: 1px solid #1e3a1e; color: #4caf50; font-size: 18px; width: 40px; height: 40px; cursor: pointer; }
+@media (max-width: 760px) {
+  nav { padding: 0 1rem; }
+  .nav-toggle { display: flex; align-items: center; justify-content: center; }
+  .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: rgba(10,10,10,0.98); border-bottom: 1px solid #1e3a1e; }
+  .nav-links.open { display: flex; }
+  .nav-links li a { display: block; padding: 14px 1.25rem; border-top: 1px solid #111d11; font-size: 14px; }
+  .nav-links .nav-forum-btn { margin: 0.75rem 1.25rem; text-align: center; }
+}
+
+/* ============ HOMEPAGE GROWTH ============ */
+.hero-proof { position: relative; z-index: 1; display: inline-block; margin: -1rem 0 1.5rem; padding: 6px 14px; border: 1px solid #1e3a1e; background: rgba(13,26,13,0.8); color: #4caf50; font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s; }
+.hero-proof:hover { border-color: #4caf50; }
+.hero-signup { position: relative; z-index: 1; margin-top: 2.5rem; width: 100%; max-width: 460px; }
+.hero-signup-label { color: #666; font-size: 13px; margin-bottom: 0.75rem; }
+.signup-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.signup-form .contact-input { flex: 1 1 220px; }
+.signup-form .btn-primary { padding: 12px 22px; }
+.signup-done { text-align: center; }
+.tier-strip { display: flex; justify-content: center; gap: 1px; flex-wrap: wrap; background: #1e3a1e; border: 1px solid #1e3a1e; margin: 0 auto 2rem; max-width: 560px; }
+.tier-chip { flex: 1 1 150px; background: #0d1a0d; padding: 1rem; display: flex; flex-direction: column; gap: 4px; text-decoration: none; transition: background 0.2s; }
+.tier-chip:hover, .tier-chip.featured { background: #122012; }
+.tier-chip-name { font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #ccc; }
+.tier-chip-price { font-family: 'Oswald', sans-serif; font-size: 1.5rem; color: #4caf50; }
+.footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 0.75rem; }
+.footer-links a { color: #888; text-decoration: none; }
+.footer-links a:hover { color: #4caf50; }
+
+/* ============ JOIN / PRICING ============ */
+.tiers-wrap { max-width: 1100px; margin: 0 auto; padding: 1rem 2rem 5rem; }
+.tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; align-items: stretch; }
+.tier-card { position: relative; background: #0d1a0d; border: 1px solid #1e3a1e; padding: 2rem 1.75rem; display: flex; flex-direction: column; }
+.tier-card.featured { border-color: #4caf50; box-shadow: 0 14px 50px rgba(76,175,80,0.12); }
+.tier-card.current { border-color: #66bb6a; }
+.tier-flag { position: absolute; top: -12px; left: 1.75rem; }
+.tier-name { font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; color: #4caf50; margin-bottom: 0.5rem; }
+.tier-price { font-family: 'Oswald', sans-serif; font-size: 3rem; font-weight: 700; color: #fff; line-height: 1; }
+.tier-price span { font-size: 14px; font-weight: 400; color: #888; margin-left: 4px; letter-spacing: 1px; }
+.tier-blurb { color: #888; font-size: 14px; line-height: 1.6; margin: 1rem 0; }
+.tier-perks { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; flex: 1; }
+.tier-perks li { color: #ccc; font-size: 14px; line-height: 1.5; padding-left: 1.4rem; position: relative; }
+.tier-perks li::before { content: '✓'; position: absolute; left: 0; color: #4caf50; }
+.tier-card button { width: 100%; }
+.tier-card button:disabled, .btn-primary:disabled, .btn-outline:disabled { opacity: 0.6; cursor: default; transform: none; }
+.tiers-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem 2rem; margin-top: 3rem; color: #888; font-size: 14px; line-height: 1.7; }
+.tiers-faq strong { display: block; color: #e8e8e8; font-weight: 500; margin-bottom: 0.25rem; }
+.tiers-faq a { color: #4caf50; }
+.member-banner { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; background: #0d1f0d; border: 1px solid #2a5a2a; color: #ccc; padding: 14px 16px; margin-bottom: 2rem; font-size: 14px; }
+.member-banner strong { color: #4caf50; font-weight: 500; }
+.member-banner a { color: #4caf50; }
+.btn-small { padding: 8px 16px; font-size: 12px; }
+.link-btn { background: none; border: none; color: #4caf50; font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+
+/* ============ MEMBERS FEED ============ */
+.feed-wrap { max-width: 760px; margin: 0 auto; padding: 1rem 2rem 5rem; }
+.feed-filters { display: flex; border-bottom: 1px solid #1e3a1e; margin-bottom: 1.5rem; overflow-x: auto; }
+.feed-filters .auth-tab { flex: 0 0 auto; padding: 10px 16px; }
+.post-card { background: #0d1a0d; border: 1px solid #1e3a1e; padding: 1.75rem; margin-bottom: 16px; }
+.post-card.locked { background: #0a120a; }
+.post-meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+.early-tag { background: #0a0a0a; color: #4caf50; border: 1px solid #4caf50; }
+.post-date { color: #555; font-size: 12px; letter-spacing: 1px; }
+.post-delete { margin-left: auto; font-size: 12px; color: #e57373; }
+.post-title { font-family: 'Oswald', sans-serif; font-size: 1.6rem; color: #fff; line-height: 1.2; margin-bottom: 1rem; font-weight: 700; }
+.post-body { color: #ccc; font-size: 16px; line-height: 1.8; margin-bottom: 1rem; white-space: pre-line; }
+.post-video { width: 100%; max-height: 70vh; background: #000; border: 1px solid #1e3a1e; margin-top: 0.5rem; }
+.post-lock { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: #888; font-size: 14px; }
+.admin-panel { border: 1px dashed #2a5a2a; padding: 1rem 1.25rem; margin-bottom: 2rem; }
+.admin-panel summary { cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 2px; text-transform: uppercase; color: #4caf50; font-size: 13px; }
+.admin-panel select.contact-input { appearance: auto; }
+
+@media (max-width: 640px) {
+  .tiers-wrap, .feed-wrap { padding-left: 1rem; padding-right: 1rem; }
+  .post-card { padding: 1.25rem; }
+  .hero { min-height: auto; padding-top: 3rem; }
 }

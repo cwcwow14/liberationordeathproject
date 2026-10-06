@@ -1,9 +1,59 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
+import { SiteFooter, SiteNav, TIKTOK_URL } from '../components/SiteNav'
+import { TIERS } from '../lib/tiers'
 
 export const Route = createFileRoute('/')({
+  head: () => ({ links: [{ rel: 'canonical', href: 'https://liberationordeath.net/' }] }),
   component: Home,
 })
+
+// Free email list — the one channel we own if TikTok ever bans or buries the account.
+// Submissions land in Netlify → Forms → "updates".
+function UpdatesSignup() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<ContactStatus>('idle')
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setStatus('submitting')
+    try {
+      const res = await fetch('/__forms.html', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'form-name': 'updates', email }).toString(),
+      })
+      setStatus(res.ok ? 'success' : 'error')
+      if (res.ok) setEmail('')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  if (status === 'success') {
+    return <div className="contact-success signup-done">You're on the list. If TikTok ever takes us down, this is how we'll find you.</div>
+  }
+  return (
+    <form name="updates" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleSubmit} className="signup-form">
+      <input type="hidden" name="form-name" value="updates" />
+      <p style={{ display: 'none' }}><label>Don't fill this out: <input name="bot-field" /></label></p>
+      <input
+        className="contact-input"
+        type="email"
+        name="email"
+        aria-label="Email address"
+        placeholder="your@email.com"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        required
+      />
+      <button type="submit" className="btn-primary" disabled={status === 'submitting'}>
+        {status === 'submitting' ? 'Joining…' : 'Get Updates'}
+      </button>
+      {status === 'error' && <div className="contact-error" style={{ flexBasis: '100%' }}>Something went wrong. Please try again.</div>}
+    </form>
+  )
+}
 
 type ContactStatus = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -124,42 +174,24 @@ function ContactForm() {
   )
 }
 
-function NavLodLogo() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="100,8 192,100 100,192 8,100" fill="none" stroke="#4caf50" strokeWidth="9" />
-      <polygon points="100,34 166,100 100,166 34,100" fill="none" stroke="#4caf50" strokeWidth="4" />
-      <text x="100" y="118" textAnchor="middle" fontFamily="Arial Black,Arial" fontWeight="900" fontSize="52" fill="#4caf50">LOD</text>
-    </svg>
-  )
-}
-
 function Home() {
   return (
     <>
-      <nav>
-        <div className="nav-logo">
-          <NavLodLogo />
-          <span className="logo-text">LOD</span>
-        </div>
-        <ul className="nav-links">
-          <li><a onClick={() => document.getElementById('manifesto')?.scrollIntoView({ behavior: 'smooth' })}>Manifesto</a></li>
-          <li><a onClick={() => document.getElementById('pillars')?.scrollIntoView({ behavior: 'smooth' })}>Goals</a></li>
-          <li><a onClick={() => document.getElementById('tiktok')?.scrollIntoView({ behavior: 'smooth' })}>TikTok</a></li>
-          <li><a onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Contact</a></li>
-          <li><Link to="/photos">Photos</Link></li>
-          <li><Link to="/reach">Reach</Link></li>
-        </ul>
-      </nav>
+      <SiteNav />
 
       <div className="hero">
         <img src="/lod-logo.jpg" alt="LOD — Liberation or Death" className="hero-logo" />
         <div className="hero-title">LOD</div>
         <div className="hero-subtitle">Liberation or Death</div>
+        <a href={TIKTOK_URL} target="_blank" rel="noreferrer" className="hero-proof">75K+ followers on TikTok ↗</a>
         <p className="hero-tagline">A movement for those who refuse to accept the destruction of our planet. We fight for a green future, animal liberation, and radical climate action.</p>
         <div className="hero-cta">
-          <button className="btn-primary" onClick={() => document.getElementById('manifesto')?.scrollIntoView({ behavior: 'smooth' })}>Read the Manifesto</button>
-          <Link to="/photos"><button className="btn-outline">View Photos</button></Link>
+          <Link to="/join"><button className="btn-primary">Become a Member</button></Link>
+          <a href="#manifesto"><button className="btn-outline">Read the Manifesto</button></a>
+        </div>
+        <div className="hero-signup">
+          <p className="hero-signup-label">Not ready to join? Get free updates by email.</p>
+          <UpdatesSignup />
         </div>
       </div>
 
@@ -198,11 +230,33 @@ function Home() {
         <div className="section-title">Find Us on TikTok</div>
         <div className="tiktok-block">
           <div className="tiktok-handle">@liberationord3ath</div>
-          <p className="tiktok-desc">We're on TikTok spreading the message, building community, and documenting the fight for a liberated planet. Join thousands watching and taking action.</p>
-          <a href="https://www.tiktok.com/@liberationord3ath?is_from_webapp=1&sender_device=pc" target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+          <p className="tiktok-desc">We're on TikTok spreading the message, building community, and documenting the fight for a liberated planet. Join 75,000+ people watching and taking action.</p>
+          <a href={TIKTOK_URL} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
             <button className="btn-primary">Follow on TikTok ↗</button>
           </a>
         </div>
+      </section>
+
+      <div className="divider" />
+
+      <section className="lod-section" id="membership" style={{ textAlign: 'center' }}>
+        <div className="section-label">— Membership</div>
+        <div className="section-title">Go Beyond the Feed</div>
+        <div className="green-line" style={{ margin: '0 auto 2rem' }} />
+        <p className="manifesto-text" style={{ maxWidth: 620, margin: '0 auto 2rem' }}>
+          TikTok gets 60 seconds. Members get the whole story — <strong>the bi-weekly Dispatch</strong>,
+          <strong> exclusive posts and videos</strong>, and <strong>early access</strong> to new drops.
+          Every membership keeps LOD independent.
+        </p>
+        <div className="tier-strip">
+          {TIERS.map(t => (
+            <Link key={t.id} to="/join" className={`tier-chip${t.featured ? ' featured' : ''}`}>
+              <span className="tier-chip-name">{t.name}</span>
+              <span className="tier-chip-price">{t.price}/mo</span>
+            </Link>
+          ))}
+        </div>
+        <Link to="/join"><button className="btn-primary">See What Members Get</button></Link>
       </section>
 
       <div className="divider" />
@@ -240,10 +294,7 @@ function Home() {
 
       <div className="divider" />
 
-      <footer>
-        <p style={{ color: '#2a4a2a', fontFamily: "'Oswald', sans-serif", letterSpacing: '3px', fontSize: '13px', marginBottom: '0.5rem' }}>LIBERATION OR DEATH</p>
-        <p>© 2026 LOD Movement. All rights reserved.</p>
-      </footer>
+      <SiteFooter />
     </>
   )
 }

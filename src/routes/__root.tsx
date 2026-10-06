@@ -24,10 +24,12 @@ export const Route = createRootRoute({
       },
       {
         property: 'og:image',
-        content: 'https://liberationordeathproject.netlify.app/lod-logo.jpg',
+        content: 'https://liberationordeath.net/lod-logo.jpg',
       },
-      { property: 'og:url', content: 'https://liberationordeathproject.netlify.app/' },
+      { property: 'og:url', content: 'https://liberationordeath.net/' },
+      { property: 'og:site_name', content: 'LOD — Liberation or Death' },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'theme-color', content: '#0a0a0a' },
       { name: 'twitter:title', content: 'LOD — Liberation or Death' },
       {
         name: 'twitter:description',
@@ -36,7 +38,7 @@ export const Route = createRootRoute({
       },
       {
         name: 'twitter:image',
-        content: 'https://liberationordeathproject.netlify.app/lod-logo.jpg',
+        content: 'https://liberationordeath.net/lod-logo.jpg',
       },
     ],
   }),

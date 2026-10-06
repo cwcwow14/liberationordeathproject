@@ -1,26 +1,28 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { login, signup } from '@netlify/identity'
 import { useIdentity } from '../lib/identity-context'
 import { useState, useEffect } from 'react'
+import { SiteNav } from '../components/SiteNav'
 
 export const Route = createFileRoute('/login')({
+  // Where to send the visitor after signing in. Same-site paths only, so the
+  // param can't be used to bounce people to another domain.
+  validateSearch: (search: Record<string, unknown>): { redirect?: string; mode?: 'signup' } => ({
+    redirect:
+      typeof search.redirect === 'string' && search.redirect.startsWith('/') && !search.redirect.startsWith('//')
+        ? search.redirect
+        : undefined,
+    mode: search.mode === 'signup' ? 'signup' : undefined,
+  }),
   component: LoginPage,
 })
 
-function NavLodLogo() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="100,8 192,100 100,192 8,100" fill="none" stroke="#4caf50" strokeWidth="9" />
-      <polygon points="100,34 166,100 100,166 34,100" fill="none" stroke="#4caf50" strokeWidth="4" />
-      <text x="100" y="118" textAnchor="middle" fontFamily="Arial Black,Arial" fontWeight="900" fontSize="52" fill="#4caf50">LOD</text>
-    </svg>
-  )
-}
-
 function LoginPage() {
   const { user, ready } = useIdentity()
+  const { redirect, mode } = Route.useSearch()
   const navigate = useNavigate()
-  const [tab, setTab] = useState<'login' | 'signup'>('login')
+  const destination = redirect ?? '/members'
+  const [tab, setTab] = useState<'login' | 'signup'>(mode ?? 'login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
@@ -29,7 +31,7 @@ function LoginPage() {
   const [confirmed, setConfirmed] = useState(false)
 
   useEffect(() => {
-    if (ready && user) navigate({ to: '/' })
+    if (ready && user) navigate({ href: destination })
   }, [ready, user])
 
   const handleLogin = async () => {
@@ -37,7 +39,7 @@ function LoginPage() {
     setLoading(true)
     try {
       await login(email, password)
-      navigate({ to: '/' })
+      navigate({ href: destination })
     } catch (e: any) {
       setErr(e.message || 'Invalid email or password.')
     } finally {
@@ -61,15 +63,7 @@ function LoginPage() {
 
   return (
     <>
-      <nav>
-        <Link to="/" className="nav-logo">
-          <NavLodLogo />
-          <span className="logo-text">LOD MEMBERS</span>
-        </Link>
-        <ul className="nav-links">
-          <li><Link to="/">← Home</Link></li>
-        </ul>
-      </nav>
+      <SiteNav label="LOD MEMBERS" />
 
       <div className="auth-wrap">
         <div className="auth-box">
@@ -101,7 +95,7 @@ function LoginPage() {
 
           {tab === 'signup' && confirmed && (
             <div className="auth-confirm">
-              ✉️ Confirmation email sent to <strong>{email}</strong>.<br />Click the link to finish joining LOD.
+              ✉️ Confirmation email sent to <strong>{email}</strong>.<br />Click the link to finish joining LOD, then sign in here.
             </div>
           )}
         </div>
