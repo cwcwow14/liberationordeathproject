@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReachRouteImport } from './routes/reach'
 import { Route as PhotosRouteImport } from './routes/photos'
+import { Route as MembersRouteImport } from './routes/members'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiLemonsqueezyWebhookRouteImport } from './routes/api/lemonsqueezy-webhook'
 
 const ReachRoute = ReachRouteImport.update({
   id: '/reach',
@@ -24,9 +27,19 @@ const PhotosRoute = PhotosRouteImport.update({
   path: '/photos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MembersRoute = MembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,39 +47,78 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLemonsqueezyWebhookRoute = ApiLemonsqueezyWebhookRouteImport.update({
+  id: '/api/lemonsqueezy-webhook',
+  path: '/api/lemonsqueezy-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
+  '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
   '/reach': typeof ReachRoute
+  '/api/lemonsqueezy-webhook': typeof ApiLemonsqueezyWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
+  '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
   '/reach': typeof ReachRoute
+  '/api/lemonsqueezy-webhook': typeof ApiLemonsqueezyWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
+  '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
   '/reach': typeof ReachRoute
+  '/api/lemonsqueezy-webhook': typeof ApiLemonsqueezyWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/photos' | '/reach'
+  fullPaths:
+    | '/'
+    | '/join'
+    | '/login'
+    | '/members'
+    | '/photos'
+    | '/reach'
+    | '/api/lemonsqueezy-webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/photos' | '/reach'
-  id: '__root__' | '/' | '/login' | '/photos' | '/reach'
+  to:
+    | '/'
+    | '/join'
+    | '/login'
+    | '/members'
+    | '/photos'
+    | '/reach'
+    | '/api/lemonsqueezy-webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/join'
+    | '/login'
+    | '/members'
+    | '/photos'
+    | '/reach'
+    | '/api/lemonsqueezy-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  JoinRoute: typeof JoinRoute
   LoginRoute: typeof LoginRoute
+  MembersRoute: typeof MembersRoute
   PhotosRoute: typeof PhotosRoute
   ReachRoute: typeof ReachRoute
+  ApiLemonsqueezyWebhookRoute: typeof ApiLemonsqueezyWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,11 +137,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PhotosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/members': {
+      id: '/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof MembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,14 +165,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/lemonsqueezy-webhook': {
+      id: '/api/lemonsqueezy-webhook'
+      path: '/api/lemonsqueezy-webhook'
+      fullPath: '/api/lemonsqueezy-webhook'
+      preLoaderRoute: typeof ApiLemonsqueezyWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  JoinRoute: JoinRoute,
   LoginRoute: LoginRoute,
+  MembersRoute: MembersRoute,
   PhotosRoute: PhotosRoute,
   ReachRoute: ReachRoute,
+  ApiLemonsqueezyWebhookRoute: ApiLemonsqueezyWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

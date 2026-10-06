@@ -1,19 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+import { SiteFooter, SiteNav } from '../components/SiteNav'
 
 export const Route = createFileRoute('/photos')({
   component: PhotosPage,
 })
-
-function NavLodLogo() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="100,8 192,100 100,192 8,100" fill="none" stroke="#4caf50" strokeWidth="9" />
-      <polygon points="100,34 166,100 100,166 34,100" fill="none" stroke="#4caf50" strokeWidth="4" />
-      <text x="100" y="118" textAnchor="middle" fontFamily="Arial Black,Arial" fontWeight="900" fontSize="52" fill="#4caf50">LOD</text>
-    </svg>
-  )
-}
 
 type Photo = { src: string; caption: string; tag?: string }
 
@@ -132,20 +123,7 @@ function PhotosPage() {
 
   return (
     <>
-      <nav>
-        <a href="/" className="nav-logo" style={{ textDecoration: 'none' }}>
-          <NavLodLogo />
-          <span className="logo-text">LOD</span>
-        </a>
-        <ul className="nav-links">
-          <li><a href="/#manifesto">Manifesto</a></li>
-          <li><a href="/#pillars">Goals</a></li>
-          <li><a href="/#tiktok">TikTok</a></li>
-          <li><a href="/#contact">Contact</a></li>
-          <li><a href="/reach">Reach</a></li>
-          <li><a href="/photos" className="nav-forum-btn">Photos</a></li>
-        </ul>
-      </nav>
+      <SiteNav />
 
       <div className="photos-hero">
         <div className="section-label">— The Movement in Pictures</div>
@@ -212,10 +190,7 @@ function PhotosPage() {
         />
       )}
 
-      <footer style={{ textAlign: 'center', padding: '3rem 1rem', borderTop: '1px solid #1e3a1e' }}>
-        <p style={{ color: '#2a4a2a', fontFamily: "'Oswald', sans-serif", letterSpacing: '3px', fontSize: '13px', marginBottom: '0.5rem' }}>LIBERATION OR DEATH</p>
-        <p style={{ color: '#555', fontSize: '13px' }}>© 2026 LOD Movement. All rights reserved.</p>
-      </footer>
+      <SiteFooter />
     </>
   )
 }
