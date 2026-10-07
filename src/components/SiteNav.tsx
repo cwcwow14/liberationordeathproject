@@ -1,18 +1,12 @@
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { PATREON_URL } from '../lib/tiers'
+import { LodMark } from './LodMark'
 
-export const TIKTOK_URL = 'https://www.tiktok.com/@liberationord3ath'
+import { TIKTOK_URL } from '../lib/tiktok'
+import { trackEvent } from '../lib/track'
 
-export function NavLodLogo() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="100,8 192,100 100,192 8,100" fill="none" stroke="#4caf50" strokeWidth="9" />
-      <polygon points="100,34 166,100 100,166 34,100" fill="none" stroke="#4caf50" strokeWidth="4" />
-      <text x="100" y="118" textAnchor="middle" fontFamily="Arial Black,Arial" fontWeight="900" fontSize="52" fill="#4caf50">LOD</text>
-    </svg>
-  )
-}
+export { TIKTOK_URL }
 
 // One nav for every page. Collapses into a menu button on phones — most visitors
 // arrive from TikTok on mobile.
@@ -23,7 +17,7 @@ export function SiteNav({ label = 'LOD' }: { label?: string }) {
   return (
     <nav>
       <Link to="/" className="nav-logo" onClick={close}>
-        <NavLodLogo />
+        <LodMark />
         <span className="logo-text">{label}</span>
       </Link>
       <button
@@ -36,9 +30,10 @@ export function SiteNav({ label = 'LOD' }: { label?: string }) {
       </button>
       <ul className={`nav-links${open ? ' open' : ''}`}>
         <li><a href="/#manifesto" onClick={close}>Manifesto</a></li>
+        <li><Link to="/action" onClick={close}>Take Action</Link></li>
         <li><Link to="/photos" onClick={close}>Photos</Link></li>
         <li><Link to="/reach" onClick={close}>Reach</Link></li>
-        <li><a href={TIKTOK_URL} target="_blank" rel="noreferrer" onClick={close}>TikTok</a></li>
+        <li><a href={TIKTOK_URL} target="_blank" rel="noreferrer" onClick={() => { trackEvent('tiktok_click', 'nav'); close() }}>TikTok</a></li>
         <li><Link to="/join" className="nav-forum-btn" onClick={close}>Join</Link></li>
       </ul>
     </nav>
@@ -50,10 +45,12 @@ export function SiteFooter() {
     <footer>
       <p style={{ color: '#2a4a2a', fontFamily: "'Oswald', sans-serif", letterSpacing: '3px', fontSize: '13px', marginBottom: '0.5rem' }}>LIBERATION OR DEATH</p>
       <p className="footer-links">
-        <a href={TIKTOK_URL} target="_blank" rel="noreferrer">TikTok</a>
+        <a href={TIKTOK_URL} target="_blank" rel="noreferrer" onClick={() => trackEvent('tiktok_click', 'footer')}>TikTok</a>
         <Link to="/join">Membership</Link>
-        <a href={PATREON_URL}>Patreon</a>
+        <a href={PATREON_URL} onClick={() => trackEvent('patreon_click', 'footer')}>Patreon</a>
+        <Link to="/action">Take Action</Link>
         <a href="/#contact">Contact</a>
+        <Link to="/privacy">Privacy</Link>
       </p>
       <p>© 2026 LOD Movement. All rights reserved.</p>
     </footer>

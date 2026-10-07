@@ -11,87 +11,87 @@ type Photo = { src: string; caption: string; tag?: string }
 // Drop additional image files into /public and add entries here to grow the gallery.
 const photos: Photo[] = [
   {
-    src: '/IMG_0192.jpeg',
+    src: '/IMG_0192.webp',
     caption: 'Animal Liberation — On the Front Lines',
     tag: 'Direct Action',
   },
   {
-    src: '/alf-beagle-rescue.jpeg',
+    src: '/alf-beagle-rescue.webp',
     caption: 'Beagles Freed from a Testing Facility',
     tag: 'Rescue',
   },
   {
-    src: '/alf-horse-rescue.jpeg',
+    src: '/alf-horse-rescue.webp',
     caption: 'A Masked Activist Leads a Horse to Safety',
     tag: 'Rescue',
   },
   {
-    src: '/alf-banner-beagles.jpeg',
+    src: '/alf-banner-beagles.webp',
     caption: 'Under the Banner — Beagles Liberated',
     tag: 'Direct Action',
   },
   {
-    src: '/alf-rabbits-liberated.jpeg',
+    src: '/alf-rabbits-liberated.webp',
     caption: 'Rabbits Freed from a Testing Lab',
     tag: 'Direct Action',
   },
   {
-    src: '/alf-beagles-fed.jpeg',
+    src: '/alf-beagles-fed.webp',
     caption: 'Among the Freed — Beagles Fed in Safety',
     tag: 'Rescue',
   },
   {
-    src: '/alf-beagles-blue.jpeg',
+    src: '/alf-beagles-blue.webp',
     caption: 'Many Hands, Many Saved',
     tag: 'Rescue',
   },
   {
-    src: '/alf-beagles-vintage.jpeg',
+    src: '/alf-beagles-vintage.webp',
     caption: 'Beagles Freed — A Movement’s Record',
     tag: 'Rescue',
   },
   {
-    src: '/alf-rabbits-white.jpeg',
+    src: '/alf-rabbits-white.webp',
     caption: 'Two White Rabbits, Carried to Safety',
     tag: 'Rescue',
   },
   {
-    src: '/alf-rabbits-forest.jpeg',
+    src: '/alf-rabbits-forest.webp',
     caption: 'Out of the Cage and Into the Trees',
     tag: 'Rescue',
   },
   {
-    src: '/alf-rabbit-held.jpeg',
+    src: '/alf-rabbit-held.webp',
     caption: 'Cradled Out of the Lab',
     tag: 'Rescue',
   },
   {
-    src: '/alf-duckling.jpeg',
+    src: '/alf-duckling.webp',
     caption: 'A Rescued Duckling in Gloved Hands',
     tag: 'Rescue',
   },
   {
-    src: '/alf-banner-dogs.png',
+    src: '/alf-banner-dogs.webp',
     caption: 'Standing Guard — The Front and Its Rescued Dogs',
     tag: 'Direct Action',
   },
   {
-    src: '/alf-monkey-rescue.png',
+    src: '/alf-monkey-rescue.webp',
     caption: 'A Baby Monkey, Held Close After Liberation',
     tag: 'Rescue',
   },
   {
-    src: '/alf-kittens.png',
+    src: '/alf-kittens.webp',
     caption: 'Kittens Carried Out of the Dark',
     tag: 'Rescue',
   },
   {
-    src: '/alf-rabbit-hoodie.png',
+    src: '/alf-rabbit-hoodie.webp',
     caption: 'A White Rabbit, Safe in Gloved Arms',
     tag: 'Rescue',
   },
   {
-    src: '/alf-lamb-rescue.png',
+    src: '/alf-lamb-rescue.webp',
     caption: 'A Lamb Carried to Freedom by Night',
     tag: 'Rescue',
   },
@@ -191,7 +191,7 @@ function PhotosPage() {
                   role="button"
                   onKeyDown={e => e.key === 'Enter' && setActive(idx)}
                 >
-                  <img src={photo.src} alt={photo.caption} className="photo-thumb" />
+                  <img src={photo.src} alt={photo.caption} className="photo-thumb" loading="lazy" decoding="async" />
                   <div className="photo-overlay">
                     <span className="photo-expand">⤢ View</span>
                   </div>

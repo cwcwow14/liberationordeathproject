@@ -9,16 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StatsRouteImport } from './routes/stats'
 import { Route as ReachRouteImport } from './routes/reach'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as MembersRouteImport } from './routes/members'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as JoinRouteImport } from './routes/join'
+import { Route as ActionRouteImport } from './routes/action'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiTrackRouteImport } from './routes/api/track'
 
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReachRoute = ReachRouteImport.update({
   id: '/reach',
   path: '/reach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PhotosRoute = PhotosRouteImport.update({
@@ -41,61 +55,132 @@ const JoinRoute = JoinRouteImport.update({
   path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActionRoute = ActionRouteImport.update({
+  id: '/action',
+  path: '/action',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTrackRoute = ApiTrackRouteImport.update({
+  id: '/api/track',
+  path: '/api/track',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/action': typeof ActionRoute
   '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
+  '/privacy': typeof PrivacyRoute
   '/reach': typeof ReachRoute
+  '/stats': typeof StatsRoute
+  '/api/track': typeof ApiTrackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/action': typeof ActionRoute
   '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
+  '/privacy': typeof PrivacyRoute
   '/reach': typeof ReachRoute
+  '/stats': typeof StatsRoute
+  '/api/track': typeof ApiTrackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/action': typeof ActionRoute
   '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
+  '/privacy': typeof PrivacyRoute
   '/reach': typeof ReachRoute
+  '/stats': typeof StatsRoute
+  '/api/track': typeof ApiTrackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join' | '/login' | '/members' | '/photos' | '/reach'
+  fullPaths:
+    | '/'
+    | '/action'
+    | '/join'
+    | '/login'
+    | '/members'
+    | '/photos'
+    | '/privacy'
+    | '/reach'
+    | '/stats'
+    | '/api/track'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join' | '/login' | '/members' | '/photos' | '/reach'
-  id: '__root__' | '/' | '/join' | '/login' | '/members' | '/photos' | '/reach'
+  to:
+    | '/'
+    | '/action'
+    | '/join'
+    | '/login'
+    | '/members'
+    | '/photos'
+    | '/privacy'
+    | '/reach'
+    | '/stats'
+    | '/api/track'
+  id:
+    | '__root__'
+    | '/'
+    | '/action'
+    | '/join'
+    | '/login'
+    | '/members'
+    | '/photos'
+    | '/privacy'
+    | '/reach'
+    | '/stats'
+    | '/api/track'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ActionRoute: typeof ActionRoute
   JoinRoute: typeof JoinRoute
   LoginRoute: typeof LoginRoute
   MembersRoute: typeof MembersRoute
   PhotosRoute: typeof PhotosRoute
+  PrivacyRoute: typeof PrivacyRoute
   ReachRoute: typeof ReachRoute
+  StatsRoute: typeof StatsRoute
+  ApiTrackRoute: typeof ApiTrackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reach': {
       id: '/reach'
       path: '/reach'
       fullPath: '/reach'
       preLoaderRoute: typeof ReachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/photos': {
@@ -126,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/action': {
+      id: '/action'
+      path: '/action'
+      fullPath: '/action'
+      preLoaderRoute: typeof ActionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -133,16 +225,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/track': {
+      id: '/api/track'
+      path: '/api/track'
+      fullPath: '/api/track'
+      preLoaderRoute: typeof ApiTrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ActionRoute: ActionRoute,
   JoinRoute: JoinRoute,
   LoginRoute: LoginRoute,
   MembersRoute: MembersRoute,
   PhotosRoute: PhotosRoute,
+  PrivacyRoute: PrivacyRoute,
   ReachRoute: ReachRoute,
+  StatsRoute: StatsRoute,
+  ApiTrackRoute: ApiTrackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

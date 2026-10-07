@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { SiteFooter, SiteNav } from '../components/SiteNav'
 import { PATREON_URL } from '../lib/tiers'
+import { trackEvent } from '../lib/track'
 
 // Member content lives on Patreon. This page stays so old links and bookmarks
 // to /members still land somewhere useful.
@@ -23,7 +24,7 @@ function MembersPage() {
           Patreon. Already a member? Open Patreon to catch up.
         </p>
         <div className="hero-cta">
-          <a href={PATREON_URL}><button className="btn-primary">Open Patreon</button></a>
+          <a href={PATREON_URL} onClick={() => trackEvent('patreon_click', 'members')}><button className="btn-primary">Open Patreon</button></a>
           <Link to="/join"><button className="btn-outline">See Memberships</button></Link>
         </div>
       </div>

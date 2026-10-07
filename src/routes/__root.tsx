@@ -1,6 +1,8 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { IdentityProvider } from '../lib/identity-context'
 import { CallbackHandler } from '../components/CallbackHandler'
+import { trackPageview } from '../lib/track'
 import '../styles.css'
 
 export const Route = createRootRoute({
@@ -24,8 +26,11 @@ export const Route = createRootRoute({
       },
       {
         property: 'og:image',
-        content: 'https://liberationordeath.net/lod-logo.jpg',
+        content: 'https://liberationordeath.net/og-image.png',
       },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:alt', content: 'LOD — Liberation or Death' },
       { property: 'og:url', content: 'https://liberationordeath.net/' },
       { property: 'og:site_name', content: 'LOD — Liberation or Death' },
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -38,8 +43,13 @@ export const Route = createRootRoute({
       },
       {
         name: 'twitter:image',
-        content: 'https://liberationordeath.net/lod-logo.jpg',
+        content: 'https://liberationordeath.net/og-image.png',
       },
+    ],
+    links: [
+      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+      { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
     ],
   }),
   shellComponent: RootDocument,
@@ -54,9 +64,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <IdentityProvider>
           <CallbackHandler>{children}</CallbackHandler>
+          <PageviewTracker />
         </IdentityProvider>
         <Scripts />
       </body>
     </html>
   )
+}
+
+// Counts one page view per route change for the visitor stats on /stats.
+function PageviewTracker() {
+  const path = useRouterState({ select: s => s.location.pathname })
+  useEffect(() => {
+    if (path !== '/stats') trackPageview(path)
+  }, [path])
+  return null
 }
