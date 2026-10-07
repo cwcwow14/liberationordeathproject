@@ -56,3 +56,11 @@ Only the city is stored. The homepage and map show the real totals.
 signups, shares and Take Action clicks. It is admin-only: set `ADMIN_EMAILS` in Netlify to
 your login email, then sign in at `/login` and open `/stats`. No cookies, no IPs stored.
 Optionally set `HASH_SALT` to any random string (salts the map's anti-spam hash).
+
+## Quick edits
+
+- **Campaign banner** (top of every page): `src/lib/campaign.ts`. Change `text`, `cta`, `href`,
+  and the `id` (so people who closed the last banner see the new one). Add `countdownTo` for a
+  live countdown, or set `enabled: false` to hide it.
+- **Slogan ticker / quote cards**: `src/lib/slogans.ts`.
+- **Follower and like counts** in the homepage counter band: `src/lib/tiktok.ts`.

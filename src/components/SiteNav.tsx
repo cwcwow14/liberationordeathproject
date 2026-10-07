@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { PATREON_URL } from '../lib/tiers'
 import { LodMark } from './LodMark'
+import { CampaignBanner } from './CampaignBanner'
 
 import { TIKTOK_URL } from '../lib/tiktok'
 import { trackEvent } from '../lib/track'
@@ -15,6 +16,8 @@ export function SiteNav({ label = 'LOD' }: { label?: string }) {
   const close = () => setOpen(false)
 
   return (
+    <>
+    <CampaignBanner />
     <nav>
       <Link to="/" className="nav-logo" onClick={close}>
         <LodMark />
@@ -37,6 +40,7 @@ export function SiteNav({ label = 'LOD' }: { label?: string }) {
         <li><Link to="/join" className="nav-forum-btn" onClick={close}>Join</Link></li>
       </ul>
     </nav>
+    </>
   )
 }
 
@@ -49,6 +53,7 @@ export function SiteFooter() {
         <Link to="/join">Membership</Link>
         <a href={PATREON_URL} onClick={() => trackEvent('patreon_click', 'footer')}>Patreon</a>
         <Link to="/action">Take Action</Link>
+        <Link to="/quotes">Quote Cards</Link>
         <a href="/#contact">Contact</a>
         <Link to="/privacy">Privacy</Link>
       </p>

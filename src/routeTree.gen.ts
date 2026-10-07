@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StatsRouteImport } from './routes/stats'
 import { Route as ReachRouteImport } from './routes/reach'
+import { Route as QuotesRouteImport } from './routes/quotes'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as MembersRouteImport } from './routes/members'
@@ -28,6 +29,11 @@ const StatsRoute = StatsRouteImport.update({
 const ReachRoute = ReachRouteImport.update({
   id: '/reach',
   path: '/reach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuotesRoute = QuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
   '/privacy': typeof PrivacyRoute
+  '/quotes': typeof QuotesRoute
   '/reach': typeof ReachRoute
   '/stats': typeof StatsRoute
   '/api/track': typeof ApiTrackRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
   '/privacy': typeof PrivacyRoute
+  '/quotes': typeof QuotesRoute
   '/reach': typeof ReachRoute
   '/stats': typeof StatsRoute
   '/api/track': typeof ApiTrackRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/members': typeof MembersRoute
   '/photos': typeof PhotosRoute
   '/privacy': typeof PrivacyRoute
+  '/quotes': typeof QuotesRoute
   '/reach': typeof ReachRoute
   '/stats': typeof StatsRoute
   '/api/track': typeof ApiTrackRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/members'
     | '/photos'
     | '/privacy'
+    | '/quotes'
     | '/reach'
     | '/stats'
     | '/api/track'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/members'
     | '/photos'
     | '/privacy'
+    | '/quotes'
     | '/reach'
     | '/stats'
     | '/api/track'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/members'
     | '/photos'
     | '/privacy'
+    | '/quotes'
     | '/reach'
     | '/stats'
     | '/api/track'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   MembersRoute: typeof MembersRoute
   PhotosRoute: typeof PhotosRoute
   PrivacyRoute: typeof PrivacyRoute
+  QuotesRoute: typeof QuotesRoute
   ReachRoute: typeof ReachRoute
   StatsRoute: typeof StatsRoute
   ApiTrackRoute: typeof ApiTrackRoute
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/reach'
       fullPath: '/reach'
       preLoaderRoute: typeof ReachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quotes': {
+      id: '/quotes'
+      path: '/quotes'
+      fullPath: '/quotes'
+      preLoaderRoute: typeof QuotesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   MembersRoute: MembersRoute,
   PhotosRoute: PhotosRoute,
   PrivacyRoute: PrivacyRoute,
+  QuotesRoute: QuotesRoute,
   ReachRoute: ReachRoute,
   StatsRoute: StatsRoute,
   ApiTrackRoute: ApiTrackRoute,
