@@ -1,14 +1,13 @@
-// Membership tiers — shared by the pricing page, the members area and the server.
+// Membership tiers, as shown on the site. Memberships are sold and delivered on
+// Patreon — the newsletter, exclusive posts/videos and early access all live there.
 //
-// Prices shown here are display copy only; what a member is actually charged is set
-// on the matching variant in the Lemon Squeezy dashboard. Keep the two in step.
-// Each tier's Lemon Squeezy variant ID is read from an env var on the server
-// (see variantIdForTier in src/server/membership.ts).
+// Keep names, prices and perks in step with the tiers set up on Patreon.
 
-export type TierId = 'supporter' | 'activist' | 'inner_circle'
+// The LOD Patreon page. Every "join" button on the site links here.
+export const PATREON_URL = 'https://www.patreon.com/c/liberationordeath/membership'
 
 export type Tier = {
-  id: TierId
+  id: 'supporter' | 'activist' | 'inner_circle'
   name: string
   price: string
   blurb: string
@@ -25,7 +24,7 @@ export const TIERS: Tier[] = [
     perks: [
       'The LOD Dispatch — a bi-weekly newsletter',
       'The good news and the bad: what is happening on the page and around the world',
-      'Full newsletter archive in the members area',
+      'Full newsletter archive on Patreon',
     ],
   },
   {
@@ -52,27 +51,3 @@ export const TIERS: Tier[] = [
     ],
   },
 ]
-
-const RANK: Record<TierId, number> = { supporter: 1, activist: 2, inner_circle: 3 }
-
-export function isTierId(v: unknown): v is TierId {
-  return v === 'supporter' || v === 'activist' || v === 'inner_circle'
-}
-
-export function tierRank(t: TierId): number {
-  return RANK[t]
-}
-
-export function tierName(t: TierId): string {
-  return TIERS.find(x => x.id === t)?.name ?? t
-}
-
-// Lemon Squeezy subscription statuses that still grant access. `cancelled` is
-// handled separately: access continues until `ends_at` (the paid-up period).
-const LIVE_STATUSES = new Set(['active', 'on_trial', 'past_due'])
-
-export function statusGrantsAccess(status: string, endsAt: Date | string | null): boolean {
-  if (LIVE_STATUSES.has(status)) return true
-  if (status === 'cancelled' && endsAt) return new Date(endsAt).getTime() > Date.now()
-  return false
-}
