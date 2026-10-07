@@ -65,6 +65,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <IdentityProvider>
           <CallbackHandler>{children}</CallbackHandler>
           <PageviewTracker />
+          {/* Shared SVG filter for the rough, printed-poster headline texture. */}
+          <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true" focusable="false">
+            <filter id="lod-rough" x="-2%" y="-5%" width="104%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </svg>
         </IdentityProvider>
         <Scripts />
       </body>

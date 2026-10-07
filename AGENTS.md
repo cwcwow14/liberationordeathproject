@@ -32,6 +32,7 @@ src/
     reach.tsx           # Reach map — real self-reported supporters + "put yourself on the map" form
     action.tsx          # Take Action page (reps, cruelty-free, sanctuaries, climate, protest rights, share)
     privacy.tsx         # Privacy policy
+    quotes.tsx          # Quote-card maker (canvas → PNG for stories; Night / Poster / Paper styles)
     stats.tsx           # Admin-only visitor stats (ADMIN_EMAILS / Identity "admin" role)
     api/
       track.ts          # Cookie-free page view / event endpoint (sendBeacon target)
@@ -42,7 +43,9 @@ src/
   lib/
     tiers.ts            # Tier definitions (names, display prices, perks) + PATREON_URL
     places.ts           # Pickable cities for the reach map + buildMap() (dots, totals, regions)
-    tiktok.ts           # TikTok handle + FEATURED_VIDEOS (empty → profile embed)
+    tiktok.ts           # TikTok handle, FEATURED_VIDEOS, follower/like numbers for the counter band
+    slogans.ts          # Ticker slogans + quote-card quotes
+    campaign.ts         # Campaign banner config (text, link, optional countdown)
     track.ts            # trackEvent / trackPageview client helpers
     auth.ts             # getServerUser server function
     identity-context.tsx # React context for client-side auth state
@@ -53,6 +56,9 @@ src/
     LodMark.tsx         # Vector LOD logo (traced from the original)
     ShareButtons.tsx    # Native share sheet + X / Facebook / WhatsApp / copy link
     TikTokFeed.tsx      # TikTok profile or featured-video embeds
+    SloganTicker.tsx    # Red scrolling slogan band
+    CountUp.tsx         # Numbers that count up when scrolled into view
+    CampaignBanner.tsx  # Dismissible banner above the nav (driven by lib/campaign.ts)
     CallbackHandler.tsx # Handles OAuth/email confirmation URL hashes
   styles.css            # All LOD custom CSS
 
@@ -113,6 +119,10 @@ All custom styles in `src/styles.css`. Key tokens:
 - Text: `#e8e8e8` (primary), `#ccc` (secondary), `#888` (muted), `#555` (faint)
 - Heading font: Oswald (weights 400, 700)
 - Body font: Inter (weights 300, 400, 500)
+- Poster theme (bottom of `styles.css`): Anton for headlines (`--poster-font`), red accent `--lod-red: #ff3b30`
+  used sparingly (stamped section labels, ticker, "or Death", photo tags), film grain overlay, torn-paper
+  `.divider`, green hover glows. Headlines use the `#lod-rough` SVG filter defined in `__root.tsx`.
+- All motion respects `prefers-reduced-motion`.
 - The Google Fonts `@import` must stay the first line of `styles.css` — browsers ignore `@import` after other rules
 
 ## Conventions

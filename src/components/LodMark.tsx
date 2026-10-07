@@ -3,11 +3,13 @@
 export const LOD_MARK_PATH =
   'M0 0H100V100H0Z M40 100V72H30V90H10V14L0 4V0H4L44 40H57L28.5 10H90V30H58.5L68.5 40H100V45H45V100Z M55 55H90V90H55Z'
 
-export function LodMark({ size = 34, color = '#4caf50', className, title }: {
+export function LodMark({ size = 34, color = '#4caf50', className, title, animate = false }: {
   size?: number
   color?: string
   className?: string
   title?: string
+  /** Draw the outline in, then fill it (hero only; respects reduced motion via CSS). */
+  animate?: boolean
 }) {
   return (
     <svg
@@ -20,7 +22,16 @@ export function LodMark({ size = 34, color = '#4caf50', className, title }: {
       aria-label={title}
       aria-hidden={title ? undefined : true}
     >
-      <path transform="rotate(45 50 50)" fill={color} fillRule="evenodd" d={LOD_MARK_PATH} />
+      {animate && (
+        <path className="lod-draw-stroke" transform="rotate(45 50 50)" d={LOD_MARK_PATH} pathLength={1} style={{ color }} />
+      )}
+      <path
+        className={animate ? 'lod-draw-fill' : undefined}
+        transform="rotate(45 50 50)"
+        fill={color}
+        fillRule="evenodd"
+        d={LOD_MARK_PATH}
+      />
     </svg>
   )
 }

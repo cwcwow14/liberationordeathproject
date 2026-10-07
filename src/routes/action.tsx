@@ -171,6 +171,7 @@ function ActionPage() {
             </p>
             <ShareButtons path="/action" text="Watching isn't enough. Here's what you can actually do this week:" />
             <div className="action-links" style={{ marginTop: '1rem' }}>
+              <Link className="action-link" to="/quotes">Make a quote card →</Link>
               <Link className="action-link" to="/reach" hash="add">Put yourself on the map →</Link>
               <Link className="action-link" to="/join">Become a member →</Link>
             </div>

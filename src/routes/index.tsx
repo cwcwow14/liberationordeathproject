@@ -2,6 +2,9 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { SiteFooter, SiteNav, TIKTOK_URL } from '../components/SiteNav'
 import { LodMark } from '../components/LodMark'
+import { SloganTicker } from '../components/SloganTicker'
+import { CountUp } from '../components/CountUp'
+import { TIKTOK_FOLLOWERS, TIKTOK_LIKES } from '../lib/tiktok'
 import { TIERS } from '../lib/tiers'
 import { ShareButtons } from '../components/ShareButtons'
 import { TikTokFeed } from '../components/TikTokFeed'
@@ -204,9 +207,10 @@ function Home() {
       <SiteNav />
 
       <div className="hero">
-        <LodMark size={200} color="#fff" className="hero-logo" title="LOD — Liberation or Death" />
-        <div className="hero-title">LOD</div>
-        <div className="hero-subtitle">Liberation or Death</div>
+        <LodMark size={200} color="#fff" className="hero-logo" title="LOD — Liberation or Death" animate />
+        <h1 className="hero-title hero-reveal hero-reveal-1">LOD</h1>
+        <div className="hero-subtitle hero-reveal hero-reveal-2">Liberation <span className="red">or Death</span></div>
+        <div className="hero-reveal hero-reveal-3 hero-rest">
         <a href={TIKTOK_URL} target="_blank" rel="noreferrer" className="hero-proof" onClick={() => trackEvent('tiktok_click', 'hero')}>75K+ followers on TikTok ↗</a>
         <p className="hero-tagline">A movement for those who refuse to accept the destruction of our planet. We fight for a green future, animal liberation, and radical climate action.</p>
         <div className="hero-cta">
@@ -218,7 +222,31 @@ function Home() {
           <UpdatesSignup />
           <p className="hero-signup-note">No spam, unsubscribe anytime. <Link to="/privacy">Privacy policy</Link>.</p>
         </div>
+        </div>
       </div>
+
+      <SloganTicker />
+
+      <section className="count-band" aria-label="The movement in numbers">
+        <div>
+          <div className="count-num"><CountUp value={TIKTOK_FOLLOWERS} suffix="+" /></div>
+          <div className="count-label">Following on TikTok</div>
+        </div>
+        <div>
+          <div className="count-num"><CountUp value={TIKTOK_LIKES} suffix="+" /></div>
+          <div className="count-label">Likes on our videos</div>
+        </div>
+        {supporters > 0 && (
+          <div>
+            <div className="count-num"><CountUp value={supporters} /></div>
+            <div className="count-label">On the LOD map</div>
+          </div>
+        )}
+        <div>
+          <div className="count-num"><CountUp value={4} /></div>
+          <div className="count-label">Causes, one fight</div>
+        </div>
+      </section>
 
       <div className="divider" />
 
@@ -234,6 +262,7 @@ function Home() {
         <p className="manifesto-text">And we fight against <strong>climate change</strong> — the greatest crisis of our era, driven by greed and enabled by cowardice. We hold accountable those who knew and did nothing.</p>
         <p className="manifesto-text">Liberation or Death is not a slogan. It is a choice. We choose liberation — of our planet, of animals, of the future. The alternative is a death we will not accept.</p>
         <ShareButtons path="/#manifesto" text="The earth does not belong to us. We belong to the earth. Read the LOD manifesto:" label="Share the manifesto" />
+        <p className="quote-cta"><Link to="/quotes">Make a quote card for your story →</Link></p>
       </section>
 
       <div className="divider" />
