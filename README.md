@@ -39,3 +39,20 @@ Keep both in step with the tiers on Patreon.
 ### Free email list
 
 The hero's "Get Updates" form collects emails into Netlify → Forms → `updates`.
+
+## Featured TikTok videos
+
+The homepage embeds the TikTok profile (latest videos). To feature specific videos instead,
+paste their links into `FEATURED_VIDEOS` in `src/lib/tiktok.ts`.
+
+## Reach map
+
+Supporters add themselves on `/reach` by picking their city (list in `src/lib/places.ts`).
+Only the city is stored. The homepage and map show the real totals.
+
+## Visitor stats
+
+`/stats` shows page views, where visitors come from, Patreon clicks per button, email
+signups, shares and Take Action clicks. It is admin-only: set `ADMIN_EMAILS` in Netlify to
+your login email, then sign in at `/login` and open `/stats`. No cookies, no IPs stored.
+Optionally set `HASH_SALT` to any random string (salts the map's anti-spam hash).

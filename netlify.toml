@@ -22,6 +22,10 @@
   function = "markdown"
   path = "/join"
 
+[[edge_functions]]
+  function = "markdown"
+  path = "/action"
+
 # Security headers — force every visitor onto HTTPS and harden the site.
 # Strict-Transport-Security tells browsers to only ever connect over HTTPS,
 # which clears the "Not secure" state on subsequent visits. The CSP

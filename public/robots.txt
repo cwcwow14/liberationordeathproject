@@ -3,5 +3,6 @@ Allow: /
 Disallow: /members
 Disallow: /login
 Disallow: /api/
+Disallow: /stats
 
 Sitemap: https://liberationordeath.net/sitemap.xml

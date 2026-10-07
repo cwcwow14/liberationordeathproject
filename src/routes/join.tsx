@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { SiteFooter, SiteNav } from '../components/SiteNav'
 import { PATREON_URL, TIERS } from '../lib/tiers'
+import { trackEvent } from '../lib/track'
 
 export const Route = createFileRoute('/join')({
   head: () => ({
@@ -40,7 +41,7 @@ function JoinPage() {
               <ul className="tier-perks">
                 {t.perks.map(p => <li key={p}>{p}</li>)}
               </ul>
-              <a href={PATREON_URL}>
+              <a href={PATREON_URL} onClick={() => trackEvent('patreon_click', t.id)}>
                 <button className={t.featured ? 'btn-primary' : 'btn-outline'}>Join as {t.name}</button>
               </a>
             </div>

@@ -29,15 +29,30 @@ src/
     members.tsx         # Pointer page: member content lives on Patreon
     login.tsx           # Login/signup (Netlify Identity); ?redirect=/path&mode=signup
     photos.tsx          # Photo gallery
-    reach.tsx           # Reach map
+    reach.tsx           # Reach map — real self-reported supporters + "put yourself on the map" form
+    action.tsx          # Take Action page (reps, cruelty-free, sanctuaries, climate, protest rights, share)
+    privacy.tsx         # Privacy policy
+    stats.tsx           # Admin-only visitor stats (ADMIN_EMAILS / Identity "admin" role)
+    api/
+      track.ts          # Cookie-free page view / event endpoint (sendBeacon target)
+  server/
+    map.ts              # getMapCounts / addMapPin (daily-salted IP hash rate limit)
+    stats.ts            # getStats (admin only)
+    admin.ts            # isAdmin()
   lib/
     tiers.ts            # Tier definitions (names, display prices, perks) + PATREON_URL
+    places.ts           # Pickable cities for the reach map + buildMap() (dots, totals, regions)
+    tiktok.ts           # TikTok handle + FEATURED_VIDEOS (empty → profile embed)
+    track.ts            # trackEvent / trackPageview client helpers
     auth.ts             # getServerUser server function
     identity-context.tsx # React context for client-side auth state
   middleware/
     identity.ts         # identityMiddleware / requireAuthMiddleware for server functions
   components/
     SiteNav.tsx         # Shared nav (mobile menu) + footer
+    LodMark.tsx         # Vector LOD logo (traced from the original)
+    ShareButtons.tsx    # Native share sheet + X / Facebook / WhatsApp / copy link
+    TikTokFeed.tsx      # TikTok profile or featured-video embeds
     CallbackHandler.tsx # Handles OAuth/email confirmation URL hashes
   styles.css            # All LOD custom CSS
 
@@ -55,6 +70,18 @@ netlify/
 - The site shows the tiers from `src/lib/tiers.ts` and links every join button to `PATREON_URL`.
 - Lemon Squeezy was tried and removed (store not approved); its tables are dropped by migration.
 
+## Reach map & stats
+
+- The reach map shows only real submissions (`map_pins`). Never add invented member counts.
+- Visitor stats are first-party and cookie-free: no IPs, user agents or personal data stored.
+- Env vars: `ADMIN_EMAILS` (who can open /stats), optional `HASH_SALT` (map rate-limit hash salt).
+
+## Images
+
+- Gallery photos are served as WebP (originals kept alongside). Convert new photos to WebP
+  (max 1600px wide) before adding them to `photos.tsx`.
+- Logo: `LodMark` component; `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `og-image.png` in `public/`.
+
 ## Auth Architecture
 
 - Uses `@netlify/identity` — NOT `netlify-identity-widget` or `gotrue-js` (both deprecated)
@@ -66,7 +93,7 @@ netlify/
 ## Database Architecture
 
 - Drizzle ORM with `drizzle-orm@beta` and `drizzle-kit@beta` (required for Netlify DB adapter)
-- Tables: legacy `threads`, `replies`, `thread_reactions`, `reply_reactions` from the removed forum
+- Tables: `map_pins` (reach map), `analytics_events` (visitor stats), plus legacy `threads`, `replies`, `thread_reactions`, `reply_reactions` from the removed forum
 - Migrations in `netlify/database/migrations/` — applied automatically by Netlify at deploy time
 - **Never** run `drizzle-kit migrate` or `drizzle-kit push` — only `drizzle-kit generate`
 - To change schema: edit `db/schema.ts` → run `npx drizzle-kit generate`

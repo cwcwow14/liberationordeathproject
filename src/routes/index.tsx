@@ -1,10 +1,29 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { SiteFooter, SiteNav, TIKTOK_URL } from '../components/SiteNav'
+import { LodMark } from '../components/LodMark'
 import { TIERS } from '../lib/tiers'
+import { ShareButtons } from '../components/ShareButtons'
+import { TikTokFeed } from '../components/TikTokFeed'
+import { trackEvent } from '../lib/track'
+import { getMapCounts } from '../server/map'
+import { PLACE_BY_KEY } from '../lib/places'
 
 export const Route = createFileRoute('/')({
   head: () => ({ links: [{ rel: 'canonical', href: 'https://liberationordeath.net/' }] }),
+  loader: async () => {
+    // Real, self-reported supporters from the reach map — never invented numbers.
+    const counts = await getMapCounts()
+    let supporters = 0
+    const countries = new Set<string>()
+    for (const [key, n] of Object.entries(counts)) {
+      const place = PLACE_BY_KEY.get(key)
+      if (!place) continue
+      supporters += n
+      countries.add(place.country)
+    }
+    return { supporters, countries: countries.size }
+  },
   component: Home,
 })
 
@@ -24,7 +43,10 @@ function UpdatesSignup() {
         body: new URLSearchParams({ 'form-name': 'updates', email }).toString(),
       })
       setStatus(res.ok ? 'success' : 'error')
-      if (res.ok) setEmail('')
+      if (res.ok) {
+        setEmail('')
+        trackEvent('email_signup')
+      }
     } catch {
       setStatus('error')
     }
@@ -83,6 +105,7 @@ function ContactForm() {
       if (res.ok) {
         setStatus('success')
         setName(''); setEmail(''); setPhone(''); setMessage('')
+        trackEvent('contact_submit')
       } else {
         setStatus('error')
       }
@@ -175,15 +198,16 @@ function ContactForm() {
 }
 
 function Home() {
+  const { supporters, countries } = Route.useLoaderData()
   return (
     <>
       <SiteNav />
 
       <div className="hero">
-        <img src="/lod-logo.jpg" alt="LOD — Liberation or Death" className="hero-logo" />
+        <LodMark size={200} color="#fff" className="hero-logo" title="LOD — Liberation or Death" />
         <div className="hero-title">LOD</div>
         <div className="hero-subtitle">Liberation or Death</div>
-        <a href={TIKTOK_URL} target="_blank" rel="noreferrer" className="hero-proof">75K+ followers on TikTok ↗</a>
+        <a href={TIKTOK_URL} target="_blank" rel="noreferrer" className="hero-proof" onClick={() => trackEvent('tiktok_click', 'hero')}>75K+ followers on TikTok ↗</a>
         <p className="hero-tagline">A movement for those who refuse to accept the destruction of our planet. We fight for a green future, animal liberation, and radical climate action.</p>
         <div className="hero-cta">
           <Link to="/join"><button className="btn-primary">Become a Member</button></Link>
@@ -192,6 +216,7 @@ function Home() {
         <div className="hero-signup">
           <p className="hero-signup-label">Not ready to join? Get free updates by email.</p>
           <UpdatesSignup />
+          <p className="hero-signup-note">No spam, unsubscribe anytime. <Link to="/privacy">Privacy policy</Link>.</p>
         </div>
       </div>
 
@@ -208,6 +233,7 @@ function Home() {
         <p className="manifesto-text">We stand for <strong>animal rights</strong> — the recognition that sentient beings are not resources, not property, not products. Every creature that feels pain deserves protection from those who would exploit them.</p>
         <p className="manifesto-text">And we fight against <strong>climate change</strong> — the greatest crisis of our era, driven by greed and enabled by cowardice. We hold accountable those who knew and did nothing.</p>
         <p className="manifesto-text">Liberation or Death is not a slogan. It is a choice. We choose liberation — of our planet, of animals, of the future. The alternative is a death we will not accept.</p>
+        <ShareButtons path="/#manifesto" text="The earth does not belong to us. We belong to the earth. Read the LOD manifesto:" label="Share the manifesto" />
       </section>
 
       <div className="divider" />
@@ -225,13 +251,28 @@ function Home() {
 
       <div className="divider" />
 
-      <section className="lod-section" id="tiktok">
-        <div className="section-label">— Follow the Movement</div>
-        <div className="section-title">Find Us on TikTok</div>
-        <div className="tiktok-block">
-          <div className="tiktok-handle">@liberationord3ath</div>
-          <p className="tiktok-desc">We're on TikTok spreading the message, building community, and documenting the fight for a liberated planet. Join 75,000+ people watching and taking action.</p>
-          <a href={TIKTOK_URL} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+      <section className="lod-section action-teaser">
+        <div className="section-label">— Take Action</div>
+        <div className="section-title">Watching Isn't Enough</div>
+        <div className="green-line" />
+        <div className="teaser-grid">
+          <Link to="/action" className="teaser-item"><span className="teaser-num">01</span>Contact your representatives — message ready to copy</Link>
+          <Link to="/action" className="teaser-item"><span className="teaser-num">02</span>Switch to cruelty-free and plant-based</Link>
+          <Link to="/action" className="teaser-item"><span className="teaser-num">03</span>Support sanctuaries and adopt a lab survivor</Link>
+          <Link to="/reach" hash="add" className="teaser-item"><span className="teaser-num">04</span>Put yourself on the map</Link>
+        </div>
+        <Link to="/action"><button className="btn-primary">See All Actions</button></Link>
+      </section>
+
+      <div className="divider" />
+
+      <section className="lod-section lod-section-wide" id="tiktok">
+        <div className="section-label">— Latest from TikTok</div>
+        <div className="section-title">Watch the Movement</div>
+        <p className="tiktok-desc" style={{ margin: '0 0 2rem' }}>Join 75,000+ people watching on TikTok @liberationord3ath.</p>
+        <TikTokFeed />
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <a href={TIKTOK_URL} target="_blank" rel="noreferrer" onClick={() => trackEvent('tiktok_click', 'feed')}>
             <button className="btn-primary">Follow on TikTok ↗</button>
           </a>
         </div>
@@ -274,10 +315,17 @@ function Home() {
         <div className="section-title">How Far We Reach</div>
         <div className="green-line" style={{ margin: '0 auto 2rem' }} />
         <p className="manifesto-text" style={{ maxWidth: 620, margin: '0 auto 2rem' }}>
-          <strong>250 members</strong> across <strong>40 countries</strong> — from Portland to
-          Prague to Cape Town. See every one of us on the map.
+          {supporters > 0 ? (
+            <><strong>{supporters} {supporters === 1 ? 'supporter' : 'supporters'}</strong> across <strong>{countries} {countries === 1 ? 'country' : 'countries'}</strong> have
+            put themselves on the map. Add your city and stand with them.</>
+          ) : (
+            <>Our supporters are spread across the world. Be one of the first to <strong>put yourself on the map</strong>.</>
+          )}
         </p>
-        <Link to="/reach"><button className="btn-primary">View the Map</button></Link>
+        <div className="hero-cta">
+          <Link to="/reach" hash="add"><button className="btn-primary">Put Me on the Map</button></Link>
+          <Link to="/reach"><button className="btn-outline">View the Map</button></Link>
+        </div>
       </section>
 
       <div className="divider" />
