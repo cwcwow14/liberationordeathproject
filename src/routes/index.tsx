@@ -246,7 +246,7 @@ function Home() {
         <p className="manifesto-text" style={{ maxWidth: 620, margin: '0 auto 2rem' }}>
           TikTok gets 60 seconds. Members get the whole story — <strong>the bi-weekly Dispatch</strong>,
           <strong> exclusive posts and videos</strong>, and <strong>early access</strong> to new drops.
-          Every membership keeps LOD independent.
+          Memberships run on Patreon, and every one keeps LOD independent.
         </p>
         <div className="tier-strip">
           {TIERS.map(t => (

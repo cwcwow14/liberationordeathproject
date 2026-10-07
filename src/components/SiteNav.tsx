@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useIdentity } from '../lib/identity-context'
+import { PATREON_URL } from '../lib/tiers'
 
 export const TIKTOK_URL = 'https://www.tiktok.com/@liberationord3ath'
 
@@ -17,7 +17,6 @@ export function NavLodLogo() {
 // One nav for every page. Collapses into a menu button on phones — most visitors
 // arrive from TikTok on mobile.
 export function SiteNav({ label = 'LOD' }: { label?: string }) {
-  const { user } = useIdentity()
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
 
@@ -40,11 +39,6 @@ export function SiteNav({ label = 'LOD' }: { label?: string }) {
         <li><Link to="/photos" onClick={close}>Photos</Link></li>
         <li><Link to="/reach" onClick={close}>Reach</Link></li>
         <li><a href={TIKTOK_URL} target="_blank" rel="noreferrer" onClick={close}>TikTok</a></li>
-        <li>
-          {user
-            ? <Link to="/members" onClick={close}>Members</Link>
-            : <Link to="/login" search={{ redirect: '/members' }} onClick={close}>Sign In</Link>}
-        </li>
         <li><Link to="/join" className="nav-forum-btn" onClick={close}>Join</Link></li>
       </ul>
     </nav>
@@ -58,6 +52,7 @@ export function SiteFooter() {
       <p className="footer-links">
         <a href={TIKTOK_URL} target="_blank" rel="noreferrer">TikTok</a>
         <Link to="/join">Membership</Link>
+        <a href={PATREON_URL}>Patreon</a>
         <a href="/#contact">Contact</a>
       </p>
       <p>© 2026 LOD Movement. All rights reserved.</p>

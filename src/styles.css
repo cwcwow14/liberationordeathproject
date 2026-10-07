@@ -237,32 +237,8 @@ footer { background: #050505; border-top: 1px solid #1e3a1e; padding: 2rem; text
 .tiers-faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem 2rem; margin-top: 3rem; color: #888; font-size: 14px; line-height: 1.7; }
 .tiers-faq strong { display: block; color: #e8e8e8; font-weight: 500; margin-bottom: 0.25rem; }
 .tiers-faq a { color: #4caf50; }
-.member-banner { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; background: #0d1f0d; border: 1px solid #2a5a2a; color: #ccc; padding: 14px 16px; margin-bottom: 2rem; font-size: 14px; }
-.member-banner strong { color: #4caf50; font-weight: 500; }
-.member-banner a { color: #4caf50; }
-.btn-small { padding: 8px 16px; font-size: 12px; }
-.link-btn { background: none; border: none; color: #4caf50; font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
-
-/* ============ MEMBERS FEED ============ */
-.feed-wrap { max-width: 760px; margin: 0 auto; padding: 1rem 2rem 5rem; }
-.feed-filters { display: flex; border-bottom: 1px solid #1e3a1e; margin-bottom: 1.5rem; overflow-x: auto; }
-.feed-filters .auth-tab { flex: 0 0 auto; padding: 10px 16px; }
-.post-card { background: #0d1a0d; border: 1px solid #1e3a1e; padding: 1.75rem; margin-bottom: 16px; }
-.post-card.locked { background: #0a120a; }
-.post-meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
-.early-tag { background: #0a0a0a; color: #4caf50; border: 1px solid #4caf50; }
-.post-date { color: #555; font-size: 12px; letter-spacing: 1px; }
-.post-delete { margin-left: auto; font-size: 12px; color: #e57373; }
-.post-title { font-family: 'Oswald', sans-serif; font-size: 1.6rem; color: #fff; line-height: 1.2; margin-bottom: 1rem; font-weight: 700; }
-.post-body { color: #ccc; font-size: 16px; line-height: 1.8; margin-bottom: 1rem; white-space: pre-line; }
-.post-video { width: 100%; max-height: 70vh; background: #000; border: 1px solid #1e3a1e; margin-top: 0.5rem; }
-.post-lock { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: #888; font-size: 14px; }
-.admin-panel { border: 1px dashed #2a5a2a; padding: 1rem 1.25rem; margin-bottom: 2rem; }
-.admin-panel summary { cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 2px; text-transform: uppercase; color: #4caf50; font-size: 13px; }
-.admin-panel select.contact-input { appearance: auto; }
 
 @media (max-width: 640px) {
-  .tiers-wrap, .feed-wrap { padding-left: 1rem; padding-right: 1rem; }
-  .post-card { padding: 1.25rem; }
+  .tiers-wrap { padding-left: 1rem; padding-right: 1rem; }
   .hero { min-height: auto; padding-top: 3rem; }
 }

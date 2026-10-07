@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-LOD (Liberation or Death) is the website for the @liberationord3ath TikTok movement. It has a public landing page, photo gallery and reach map, a free email list, and paid memberships (via Lemon Squeezy) that unlock a members-only feed. Built with TanStack Start on Netlify, using Netlify Identity for authentication and Netlify Database (Postgres) for persistence.
+LOD (Liberation or Death) is the website for the @liberationord3ath TikTok movement. It has a public landing page, photo gallery and reach map, a free email list, and a membership page that sends people to the LOD Patreon. Built with TanStack Start on Netlify, using Netlify Identity for authentication and Netlify Database (Postgres) for persistence.
 
 ## Tech Stack
 
@@ -14,7 +14,7 @@ LOD (Liberation or Death) is the website for the @liberationord3ath TikTok movem
 | Styling | Custom CSS (Oswald + Inter fonts, dark green theme) |
 | Database | Netlify Database via Drizzle ORM (`drizzle-orm@beta`) |
 | Auth | Netlify Identity (`@netlify/identity`) |
-| Payments | Lemon Squeezy (REST API via `fetch`, no SDK) |
+| Memberships | Patreon (linked out — no payment code on the site) |
 | Language | TypeScript 5.x (strict mode) |
 | Deployment | Netlify |
 
@@ -25,17 +25,13 @@ src/
   routes/
     __root.tsx          # Root layout: IdentityProvider + CallbackHandler, site-wide meta
     index.tsx           # Landing page (hero, email signup, manifesto, membership teaser, contact)
-    join.tsx            # Pricing page — three tiers, starts Lemon Squeezy checkout
-    members.tsx         # Members feed (Dispatch newsletter, posts, videos) + admin composer
+    join.tsx            # Pricing page — three tiers, each links to Patreon
+    members.tsx         # Pointer page: member content lives on Patreon
     login.tsx           # Login/signup (Netlify Identity); ?redirect=/path&mode=signup
     photos.tsx          # Photo gallery
     reach.tsx           # Reach map
-    api/
-      lemonsqueezy-webhook.ts  # Signed webhook — the only writer of `memberships`
-  server/
-    membership.ts       # Server functions: membership, checkout, portal, feed, admin
   lib/
-    tiers.ts            # Tier definitions (names, display prices, perks) + access rules
+    tiers.ts            # Tier definitions (names, display prices, perks) + PATREON_URL
     auth.ts             # getServerUser server function
     identity-context.tsx # React context for client-side auth state
   middleware/
@@ -55,18 +51,9 @@ netlify/
 
 ## Memberships
 
-- Tiers: `supporter` ($3), `activist` ($8), `inner_circle` ($20) — defined in `src/lib/tiers.ts`.
-  Displayed prices are copy only; the charged amount is set on the Lemon Squeezy variant.
-- Checkout: `createCheckout` creates a Lemon Squeezy checkout with `custom.user_id` = Netlify Identity user ID.
-- Access is granted **only** by the webhook (`/api/lemonsqueezy-webhook`, HMAC-SHA256 `X-Signature`), which upserts `memberships` keyed by `user_id`.
-- Access rule (`statusGrantsAccess`): `active`, `on_trial`, `past_due`, or `cancelled` until `ends_at`.
-- Feed: `member_posts.min_tier` gates who can read; before `early_until` only Inner Circle can. Locked posts are sent to the client as teasers with `body`/`videoUrl` stripped.
-- Admins: Identity role `admin` or email in `ADMIN_EMAILS`. They can publish/delete posts and export member emails as CSV.
-
-### Environment variables
-
-`LEMONSQUEEZY_API_KEY`, `LEMONSQUEEZY_STORE_ID`, `LEMONSQUEEZY_WEBHOOK_SECRET`,
-`LEMONSQUEEZY_VARIANT_SUPPORTER`, `LEMONSQUEEZY_VARIANT_ACTIVIST`, `LEMONSQUEEZY_VARIANT_INNER_CIRCLE`, `ADMIN_EMAILS`.
+- Sold and delivered entirely on Patreon (newsletter, exclusive posts/videos, early access).
+- The site shows the tiers from `src/lib/tiers.ts` and links every join button to `PATREON_URL`.
+- Lemon Squeezy was tried and removed (store not approved); its tables are dropped by migration.
 
 ## Auth Architecture
 
@@ -79,7 +66,7 @@ netlify/
 ## Database Architecture
 
 - Drizzle ORM with `drizzle-orm@beta` and `drizzle-kit@beta` (required for Netlify DB adapter)
-- Tables: `memberships`, `member_posts` (plus legacy `threads`, `replies`, `thread_reactions`, `reply_reactions` from the removed forum)
+- Tables: legacy `threads`, `replies`, `thread_reactions`, `reply_reactions` from the removed forum
 - Migrations in `netlify/database/migrations/` — applied automatically by Netlify at deploy time
 - **Never** run `drizzle-kit migrate` or `drizzle-kit push` — only `drizzle-kit generate`
 - To change schema: edit `db/schema.ts` → run `npx drizzle-kit generate`

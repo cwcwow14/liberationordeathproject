@@ -21,7 +21,7 @@ function LoginPage() {
   const { user, ready } = useIdentity()
   const { redirect, mode } = Route.useSearch()
   const navigate = useNavigate()
-  const destination = redirect ?? '/members'
+  const destination = redirect ?? '/'
   const [tab, setTab] = useState<'login' | 'signup'>(mode ?? 'login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
