@@ -70,6 +70,31 @@ const photos: Photo[] = [
     caption: 'A Rescued Duckling in Gloved Hands',
     tag: 'Rescue',
   },
+  {
+    src: '/alf-banner-dogs.png',
+    caption: 'Standing Guard — The Front and Its Rescued Dogs',
+    tag: 'Direct Action',
+  },
+  {
+    src: '/alf-monkey-rescue.png',
+    caption: 'A Baby Monkey, Held Close After Liberation',
+    tag: 'Rescue',
+  },
+  {
+    src: '/alf-kittens.png',
+    caption: 'Kittens Carried Out of the Dark',
+    tag: 'Rescue',
+  },
+  {
+    src: '/alf-rabbit-hoodie.png',
+    caption: 'A White Rabbit, Safe in Gloved Arms',
+    tag: 'Rescue',
+  },
+  {
+    src: '/alf-lamb-rescue.png',
+    caption: 'A Lamb Carried to Freedom by Night',
+    tag: 'Rescue',
+  },
 ]
 
 function Lightbox({
