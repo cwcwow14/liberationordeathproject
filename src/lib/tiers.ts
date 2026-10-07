@@ -4,7 +4,7 @@
 // Keep names, prices and perks in step with the tiers set up on Patreon.
 
 // The LOD Patreon page. Every "join" button on the site links here.
-export const PATREON_URL = 'https://www.patreon.com/c/liberationordeath/membership'
+export const PATREON_URL = 'https://www.patreon.com/cw/liberationordeath'
 
 export type Tier = {
   id: 'supporter' | 'activist' | 'inner_circle'
