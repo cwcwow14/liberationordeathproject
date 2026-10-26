@@ -20,6 +20,7 @@ import { Route as JoinRouteImport } from './routes/join'
 import { Route as ActionRouteImport } from './routes/action'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiTrackRouteImport } from './routes/api/track'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
 
 const StatsRoute = StatsRouteImport.update({
   id: '/stats',
@@ -76,6 +77,11 @@ const ApiTrackRoute = ApiTrackRouteImport.update({
   path: '/api/track',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/quotes': typeof QuotesRoute
   '/reach': typeof ReachRoute
   '/stats': typeof StatsRoute
+  '/api/health': typeof ApiHealthRoute
   '/api/track': typeof ApiTrackRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/quotes': typeof QuotesRoute
   '/reach': typeof ReachRoute
   '/stats': typeof StatsRoute
+  '/api/health': typeof ApiHealthRoute
   '/api/track': typeof ApiTrackRoute
 }
 export interface FileRoutesById {
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/quotes': typeof QuotesRoute
   '/reach': typeof ReachRoute
   '/stats': typeof StatsRoute
+  '/api/health': typeof ApiHealthRoute
   '/api/track': typeof ApiTrackRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/quotes'
     | '/reach'
     | '/stats'
+    | '/api/health'
     | '/api/track'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/quotes'
     | '/reach'
     | '/stats'
+    | '/api/health'
     | '/api/track'
   id:
     | '__root__'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/quotes'
     | '/reach'
     | '/stats'
+    | '/api/health'
     | '/api/track'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   QuotesRoute: typeof QuotesRoute
   ReachRoute: typeof ReachRoute
   StatsRoute: typeof StatsRoute
+  ApiHealthRoute: typeof ApiHealthRoute
   ApiTrackRoute: typeof ApiTrackRoute
 }
 
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTrackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -266,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuotesRoute: QuotesRoute,
   ReachRoute: ReachRoute,
   StatsRoute: StatsRoute,
+  ApiHealthRoute: ApiHealthRoute,
   ApiTrackRoute: ApiTrackRoute,
 }
 export const routeTree = rootRouteImport
