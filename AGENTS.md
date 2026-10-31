@@ -36,8 +36,10 @@ src/
     stats.tsx           # Admin-only visitor stats (ADMIN_EMAILS / Identity "admin" role)
     api/
       track.ts          # Cookie-free page view / event endpoint (sendBeacon target)
+      health.ts         # /api/health — database connectivity + which tables exist
   server/
-    map.ts              # getMapCounts / addMapPin (daily-salted IP hash rate limit)
+    map.ts              # getMapCounts / addMapPin server functions (thin; import map-store dynamically)
+    map-store.ts        # Server-only map storage in Netlify Blobs (+ reads legacy map_pins table if present)
     stats.ts            # getStats (admin only)
     admin.ts            # isAdmin()
   lib/
@@ -78,7 +80,12 @@ netlify/
 
 ## Reach map & stats
 
-- The reach map shows only real submissions (`map_pins`). Never add invented member counts.
+- The reach map shows only real submissions. Never add invented member counts.
+- Map pins are stored in Netlify Blobs (store `lod-map`: `pin/<base64url(City|Country)>/<id>`,
+  `rate/<day>/<ipHash>`), not Postgres — the `map_pins` migration never applied in production.
+  Counts also include any rows in the legacy `map_pins` table if it ever exists.
+- Keep server-only libraries (Blobs, DB driver) out of the browser bundle: import them
+  dynamically inside server-function handlers, as `map.ts` does with `map-store.ts`.
 - Visitor stats are first-party and cookie-free: no IPs, user agents or personal data stored.
 - Env vars: `ADMIN_EMAILS` (who can open /stats), optional `HASH_SALT` (map rate-limit hash salt).
 

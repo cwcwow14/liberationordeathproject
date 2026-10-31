@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { and, desc, eq, gte, isNotNull, sql } from 'drizzle-orm'
 import { db } from '../../db'
-import { analyticsEvents, mapPins } from '../../db/schema'
+import { analyticsEvents } from '../../db/schema'
 import { requireAuthMiddleware } from '../middleware/identity'
 import { isAdmin } from './admin'
 
@@ -55,7 +55,8 @@ export const getStats = createServerFn({ method: 'GET' })
       return rows.map(r => ({ label: r.label ?? '', count: Number(r.n) }))
     }
 
-    const [pins] = await db.select({ n: count }).from(mapPins)
+    const { totalPins } = await import('./map-store')
+    const pinsTotal = await totalPins().catch(() => 0)
 
     // Fill gaps so the chart shows zero-traffic days instead of skipping them.
     const byDay = new Map(dailyRows.map(r => [r.day, Number(r.n)]))
@@ -73,7 +74,7 @@ export const getStats = createServerFn({ method: 'GET' })
       emailSignups: total('email_signup'),
       tiktokClicks: total('tiktok_click'),
       contactSubmits: total('contact_submit'),
-      mapPinsTotal: Number(pins?.n ?? 0),
+      mapPinsTotal: pinsTotal,
       daily,
       topPages: await breakdown(analyticsEvents.path, ofKind('pageview')),
       referrers: await breakdown(analyticsEvents.referrer, ofKind('pageview')),
